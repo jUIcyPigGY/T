@@ -1,7 +1,10 @@
-streamlit
+streamlit>=1.22.0
+langchain==0.0.348
+langchain-community==0.0.10
+# streamlit
 python-dotenv
-langchain
-langchain-community
+# langchain
+# langchain-community
 openai
 qrcode
 faiss-cpu
