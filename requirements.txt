@@ -1,0 +1,13 @@
+streamlit
+python-dotenv
+langchain
+langchain-community
+openai
+qrcode
+faiss-cpu
+PyPDF2
+python-multipart
+pillow
+pandas
+numpy
+tiktoken>=0.5.0
