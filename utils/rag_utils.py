@@ -1,11 +1,11 @@
 from __future__ import annotations
 import os, tempfile
-from typing import Optional, Tuple, Union, Callable
+from typing import Optional, Tuple, Union, Callable, Dict, Any, List
 from pathlib import Path
 from dotenv import load_dotenv
 
 # 从项目根目录加载 .env
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(dotenv_path=ROOT / ".env")
 
 from langchain_community.document_loaders import PyPDFLoader
@@ -63,10 +63,10 @@ def build_vectorstore_from_pdf(
         return FAISS.from_documents(chunks, embeddings)
     finally:
         try:
-            if os.path.exists(path) and "tmp" in os.path.dirname(path):
+            if path.startswith(tempfile.gettempdir()):  # 更准确地判断临时文件
                 os.unlink(path)
-        except Exception:
-            pass
+        except Exception as e:
+            logging.warning(f"Failed to delete temp file {path}: {e}")
 
 
 def save_vectorstore(vectorstore: FAISS, save_dir: str) -> None:
