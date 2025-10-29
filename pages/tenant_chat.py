@@ -89,13 +89,12 @@ def rebuild_pipeline_from_loaded_contracts():
         return
 
     try:
-        # 简单的合并策略：只使用第一个向量库
-        if len(vs_values) > 0:
+        if vs_values:
             merged_vs = vs_values[0]
-            st.success(f"✅ Loaded contracts with retrieval functionality")
+            for vs in vs_values[1:]:
+                merged_vs.merge_from(vs)  # 合并所有向量库
         else:
             st.warning("⚠️ No available vector stores")
-            return
 
         # 重建对话链
         chain, llm, memory, chain_invoke_safe = create_conversation_chain(
@@ -140,8 +139,10 @@ defaults = {
     "vectorstores_map": {},
     "loaded_keys": set(),
     "conversation_chain": None,
-    "chain_invoke_safe": None,
+    "chain_invoke_safe": None, 
     "agent": None,
+    "llm": None,
+    "memory": None,  # 添加这些关键状态
     "current_contract_link": None,  # 当前合同的云端链接
     "current_contract_qr": None,    # 当前合同的二维码路径
     "current_contract_id": None     # 当前合同的ID
